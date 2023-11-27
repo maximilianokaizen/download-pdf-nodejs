@@ -9,7 +9,7 @@ app.get('/pdf', (req, res) => {
     res.send('¡Hola, mundo!');
 });
 
-app.get('/pdf', (req, res) => {
+app.post('/pdf', (req, res) => {
     // get html and convert to 
     // pdf
     const data = {
