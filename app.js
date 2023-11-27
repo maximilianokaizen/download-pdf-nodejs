@@ -1,20 +1,21 @@
 const express = require('express');
+const puppeteer = require('puppeteer');
+const cors = require('cors'); // Importa el módulo cors
+
 const app = express();
+
+app.use(cors()); // Habilita CORS para todas las rutas
+app.use(express.json()); // Middleware para interpretar el body como JSON
 
 app.get('/', (req, res) => {
   res.send('¡Hola, mundo!');
 });
 
-app.get('/pdf', (req, res) => {
-    res.send('¡Hola, mundo!');
-});
-
 app.post('/pdf', async (req, res) => {
-
     const htmlContent = req.body.html; // Se espera recibir un parámetro 'html' con el HTML a convertir a PDF
     
     if (!htmlContent) {
-        return res.status(400).json({ success: false, message: 'Html not found in body' });
+        return res.status(400).json({ success: false, message: 'No se proporcionó HTML.' });
     }
 
     try {
@@ -34,6 +35,7 @@ app.post('/pdf', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error al generar el PDF.' });
     }
 });
+
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
