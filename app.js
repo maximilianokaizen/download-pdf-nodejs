@@ -5,6 +5,11 @@ app.get('/', (req, res) => {
   res.send('¡Hola, mundo!');
 });
 
+app.get('/pdf', (req, res) => {
+    res.send('¡Hola, mundo!');
+});
+
+  
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
