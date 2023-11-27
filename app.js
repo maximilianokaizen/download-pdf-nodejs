@@ -32,7 +32,8 @@ app.post('/pdf', async (req, res) => {
         res.send(pdfBuffer);
 
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Error al generar el PDF.' });
+        //res.status(500).json({ success: false, message: 'Error al generar el PDF.' });
+        res.status(500).json({ success: false, message: error });
     }
 });
 
