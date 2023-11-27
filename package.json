@@ -4,15 +4,16 @@
     "description": "Ejemplo de aplicación Node.js con Express",
     "main": "app.js",
     "dependencies": {
-      "express": "^4.17.1"
+        "express": "^4.17.1",
+        "puppeteer": "^21.5.2"
     },
     "scripts": {
-      "start": "node app.js"
+        "start": "node app.js"
     },
     "keywords": [
-      "Node.js",
-      "Express"
+        "Node.js",
+        "Express"
     ],
     "author": "TuNombre",
     "license": "MIT"
-  }
+}
