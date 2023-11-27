@@ -1,0 +1,18 @@
+{
+    "name": "hello-world-express",
+    "version": "1.0.0",
+    "description": "Ejemplo de aplicación Node.js con Express",
+    "main": "app.js",
+    "dependencies": {
+      "express": "^4.17.1"
+    },
+    "scripts": {
+      "start": "node app.js"
+    },
+    "keywords": [
+      "Node.js",
+      "Express"
+    ],
+    "author": "TuNombre",
+    "license": "MIT"
+  }

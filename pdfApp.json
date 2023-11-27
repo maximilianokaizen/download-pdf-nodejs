@@ -1,0 +1,13 @@
+{
+    "name": "pdfApp",
+    "script": "/root/downloadpdf/index.js",
+    "args": [],
+    "node_args": [],
+    "exec_mode": "fork",
+    "instances": 1,
+    "watch": false,
+    "env": {
+      "PORT": 4000
+    }
+  }
+
