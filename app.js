@@ -76,7 +76,7 @@ app.post('/getimage', async (req, res) => {
       const page = await browser.newPage();
 
       // Cargar la URL proporcionada
-      await page.goto(url, { waitUntil: 'networkidle0' });
+      await page.goto(url, { waitUntil: 'networkidle2' });
 
       // Obtener dimensiones de la página
       const { width, height } = await page.evaluate(() => {
@@ -87,7 +87,8 @@ app.post('/getimage', async (req, res) => {
       });
 
       // Establecer el tamaño de la página en Puppeteer
-      await page.setViewport({ width, height });
+      await page.setViewport({ width: 1200, height: 1200 }); // Establecer un tamaño específico
+      //await page.setViewport({ width, height });
 
       // Capturar la imagen
       const imageBuffer = await page.screenshot({ encoding: 'binary' });
