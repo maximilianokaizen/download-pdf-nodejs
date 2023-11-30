@@ -39,7 +39,7 @@ app.post('/pdf', async (req, res) => {
 
 app.post('/image', async (req, res) => {
   const htmlContent = req.body.html;
-
+  
   if (!htmlContent) {
     return res.status(400).json({ success: false, message: 'No se proporcionó HTML.' });
   }
@@ -61,6 +61,44 @@ app.post('/image', async (req, res) => {
     res.send(imageBuffer);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message, stack: error.stack });
+  }
+});
+
+app.post('/getimage', async (req, res) => {
+  const url = req.body.url;
+
+  if (!url) {
+      return res.status(400).json({ success: false, message: 'No se proporcionó una URL.' });
+  }
+
+  try {
+      const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+      const page = await browser.newPage();
+
+      // Cargar la URL proporcionada
+      await page.goto(url, { waitUntil: 'networkidle0' });
+
+      // Obtener dimensiones de la página
+      const { width, height } = await page.evaluate(() => {
+          return {
+              width: document.documentElement.clientWidth,
+              height: document.documentElement.clientHeight,
+          };
+      });
+
+      // Establecer el tamaño de la página en Puppeteer
+      await page.setViewport({ width, height });
+
+      // Capturar la imagen
+      const imageBuffer = await page.screenshot({ encoding: 'binary' });
+
+      await browser.close();
+
+      res.setHeader('Content-Disposition', 'attachment; filename=archivo.png');
+      res.setHeader('Content-Type', 'image/png');
+      res.send(imageBuffer);
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message, stack: error.stack });
   }
 });
 
