@@ -51,7 +51,6 @@ app.post('/image', async (req, res) => {
     const page = await browser.newPage();
     await page.setContent(htmlContent);
     const dynamicContent = await page.$('#container');
-    const { width, height } = await dynamicContent.boundingBox();
     await page.setViewport({ width: width, height: height }); // Establecer un tamaño específico
     await page.screenshot({ path: 'output.png' });
     const imageBuffer = await page.screenshot({ encoding: 'binary' });
