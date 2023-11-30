@@ -37,6 +37,31 @@ app.post('/pdf', async (req, res) => {
     }
 });
 
+app.post('/image', async (req, res) => {
+  const htmlContent = req.body.html;
+
+  if (!htmlContent) {
+    return res.status(400).json({ success: false, message: 'No se proporcionó HTML.' });
+  }
+
+  try {
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+    const page = await browser.newPage();
+
+    await page.setContent(htmlContent);
+    const imageBuffer = await page.screenshot({ encoding: 'binary' });
+
+    await browser.close();
+
+    res.setHeader('Content-Disposition', 'attachment; filename=archivo.png');
+    res.setHeader('Content-Type', 'image/png');
+    res.send(imageBuffer);
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message, stack: error.stack });
+  }
+});
+
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
