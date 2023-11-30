@@ -47,16 +47,16 @@ app.post('/image', async (req, res) => {
   try {
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
-
     await page.setContent(htmlContent);
     const imageBuffer = await page.screenshot({ encoding: 'binary' });
-
+    const bodyHandle = await page.$('body');
+    const { width, height } = await bodyHandle.boundingBox();
+    await page.setViewport({ width: Math.ceil(width), height: Math.ceil(height) });
+    await page.screenshot({ path: 'output.png' });
     await browser.close();
-
     res.setHeader('Content-Disposition', 'attachment; filename=archivo.png');
     res.setHeader('Content-Type', 'image/png');
     res.send(imageBuffer);
-
   } catch (error) {
     res.status(500).json({ success: false, message: error.message, stack: error.stack });
   }
