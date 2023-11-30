@@ -39,7 +39,9 @@ app.post('/pdf', async (req, res) => {
 
 app.post('/image', async (req, res) => {
   const htmlContent = req.body.html;
-  
+  const width = req.body.width;
+  const height = req.body.height;
+
   if (!htmlContent) {
     return res.status(400).json({ success: false, message: 'No se proporcionó HTML.' });
   }
@@ -50,11 +52,9 @@ app.post('/image', async (req, res) => {
     await page.setContent(htmlContent);
     const dynamicContent = await page.$('#container');
     const { width, height } = await dynamicContent.boundingBox();
-    await page.setViewport({ width: Math.ceil(width), height: Math.ceil(height) });
+    await page.setViewport({ width: width, height: height }); // Establecer un tamaño específico
     await page.screenshot({ path: 'output.png' });
     const imageBuffer = await page.screenshot({ encoding: 'binary' });
-    await page.setViewport({ width: Math.ceil(width), height: Math.ceil(height) });
-    await page.screenshot({ path: 'output.png' });
     await browser.close();
     res.setHeader('Content-Disposition', 'attachment; filename=archivo.png');
     res.setHeader('Content-Type', 'image/png');
