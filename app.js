@@ -48,9 +48,11 @@ app.post('/image', async (req, res) => {
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.setContent(htmlContent);
+    const dynamicContent = await page.$('#container');
+    const { width, height } = await dynamicContent.boundingBox();
+    await page.setViewport({ width: Math.ceil(width), height: Math.ceil(height) });
+    await page.screenshot({ path: 'output.png' });
     const imageBuffer = await page.screenshot({ encoding: 'binary' });
-    const bodyHandle = await page.$('body');
-    const { width, height } = await bodyHandle.boundingBox();
     await page.setViewport({ width: Math.ceil(width), height: Math.ceil(height) });
     await page.screenshot({ path: 'output.png' });
     await browser.close();
