@@ -39,18 +39,15 @@ app.post('/pdf', async (req, res) => {
 
 app.post('/image', async (req, res) => {
   const htmlContent = req.body.html;
-  const width = req.body.width;
-  const height = req.body.height;
-
+  const width = parseInt(req.body.width);
+  const height = parseInt(req.body.height);
   if (!htmlContent) {
     return res.status(400).json({ success: false, message: 'No se proporcionó HTML.' });
   }
-
   try {
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.setContent(htmlContent);
-    const dynamicContent = await page.$('#container');
     await page.setViewport({ width: width, height: height }); // Establecer un tamaño específico
     await page.screenshot({ path: 'output.png' });
     const imageBuffer = await page.screenshot({ encoding: 'binary' });
